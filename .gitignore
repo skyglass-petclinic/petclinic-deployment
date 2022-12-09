@@ -31,5 +31,6 @@ override.tf.json
 .vscode
 .terraform.lock.hcl
 terraform.auto.tfvars
+values.override.yaml
 --region
 LocationConstraint=eu-central-1

@@ -1,5 +1,4 @@
 def region = 'eu-central-1'
-def accounts = [master:'production', preprod:'staging', develop:'sandbox']
 
 node('master'){
     stage('Checkout'){
@@ -7,13 +6,13 @@ node('master'){
     }
 
     stage('Authentication'){
-        sh "aws eks update-kubeconfig --name ${accounts[env.BRANCH_NAME]} --region ${region}"
+        sh "aws eks update-kubeconfig --name petclinic-online-cluster --region ${region}"
     }
 
     stage('Deploy'){
         sh """
-            helm dependency update watchlist
-            helm upgrade --install watchlist ./watchlist -f values.override.yaml \
+            helm dependency update petclinic
+            helm upgrade --install petclinic ./petclinic -f values.override.yaml \
                 --set metadata.jenkins.buildTag=${env.BUILD_TAG} \
                 --set metadata.git.commitId=${getCommitId()}
         """
